@@ -53,6 +53,16 @@ public function main() returns error? {
     chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
     chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
     chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
     record {|
         chat:ChatCompletionResponseMessage message?;
         chat:ContentFilterChoiceResults content_filter_results?;
