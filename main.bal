@@ -1,5 +1,6 @@
 import ballerina/io;
 import ballerinax/azure.openai.chat as chat;
+import ballerina/time;
 
 configurable string apiKey = ?;
 configurable string serviceUrl = ?;
@@ -33,36 +34,19 @@ final chat:Client chatClient = check new (
 );
 
 public function main() returns error? {
+    int index = 0;
+    decimal totalDiff = 0;
+    while index < 1000 {
+        decimal st = time:monotonicNow();
+        chat:CreateChatCompletionResponse _ = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+        decimal diff = time:monotonicNow() - st;
+        io:println(index, ":- ", diff);
+        totalDiff = totalDiff + diff;
+        index = index + 1;
+    }
+
+    io:println("avg", totalDiff/1000);
     chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
     record {|
         chat:ChatCompletionResponseMessage message?;
         chat:ContentFilterChoiceResults content_filter_results?;
