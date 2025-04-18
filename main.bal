@@ -33,34 +33,50 @@ final chat:Client chatClient = check new (
     serviceUrl = serviceUrl
 );
 
+const TOTAL_ITERATIONS = 100;
+int numberOfErrors = 0;
+decimal totalDiff = 0;
+
+record {
+    decimal average;
+    boolean isError;
+}[] results = [];
+
 public function main() returns error? {
     int index = 0;
-    decimal totalDiff = 0;
-    while index < 1000 {
+
+    check io:fileWriteCsv("./epoch_results.csv", <map<anydata>[]>[], option = io:OVERWRITE);
+
+    while index < TOTAL_ITERATIONS {
         decimal st = time:monotonicNow();
-        chat:CreateChatCompletionResponse _ = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
+        chat:CreateChatCompletionResponse|error result = chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
         decimal diff = time:monotonicNow() - st;
+
+        if result is error {
+            if result.message().includes("Error occurred while attempting to parse the response") {
+                numberOfErrors += 1;
+                index = index + 1;
+            }
+            
+            io:println("Error occured:- ", result.message(), ":- ", numberOfErrors);
+            continue;
+        }
+
         io:println(index, ":- ", diff);
         totalDiff = totalDiff + diff;
         index = index + 1;
+
+        check io:fileWriteCsv("./epoch_results.csv", [{
+            index,
+            diff
+        }], option = io:APPEND);
     }
 
-    io:println("avg", totalDiff/1000);
-    chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/[deploymentId]/chat/completions.post(apiVersion, chatBody);
-    record {|
-        chat:ChatCompletionResponseMessage message?;
-        chat:ContentFilterChoiceResults content_filter_results?;
-        int index?;
-        string finish_reason?;
-        anydata...;
-    |}[]? choices = chatResult.choices;
-
-    if (choices is ()) {
-        io:println("No completion found!");
-        return;
-    }
-
-    io:println(choices[0].message?.tool_calls);
+    io:println("avg for the batch", totalDiff/TOTAL_ITERATIONS);
+    check io:fileWriteCsv("./final_results.csv", [{
+        average: totalDiff/(TOTAL_ITERATIONS - numberOfErrors),
+        numberOfErrors
+    }], option = io:OVERWRITE);
 }
 
 
