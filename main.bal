@@ -21,7 +21,13 @@ chat:CreateChatCompletionRequest chatBody = {
                 parameters: jsonSchema
             }
         }
-    ]
+    ],
+    tool_choice: {
+        'type: "function",
+        'function: {
+            name: "get_results"
+        }
+    }
 };
 
 final chat:Client chatClient = check new (
