@@ -18,7 +18,6 @@ chat:CreateChatCompletionRequest chatBody = {
             'type: "function",
             'function: {
                 name: "get_results",
-                description: prompt,
                 parameters: jsonSchema
             }
         }
